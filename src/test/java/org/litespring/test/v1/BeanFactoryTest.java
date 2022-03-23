@@ -10,11 +10,11 @@ public class BeanFactoryTest {
 
     @Test
     public void testGetBean() {
-        BeanFactory beanFactory = new DefaultBeanFactory("petStore.xml");
+        BeanFactory beanFactory = new DefaultBeanFactory("petstore-v1.xml");
         BeanDefinition beanDefinition = beanFactory.getBeanDefinition("petStore");
         Assert.assertEquals(beanDefinition.getBeanClassName(), "org.litespring.service.v1.PetStoreService");
 
-        PetStoreService petStore = (PetStoreService) beanDefinition.getBean("petStore");
+        PetStoreService petStore = (PetStoreService) beanFactory.getBean("petStore");
         Assert.assertNotNull(petStore);
     }
 }
