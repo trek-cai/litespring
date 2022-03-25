@@ -19,6 +19,7 @@ public class XmlBeanDefinitionReader {
 
     public static final String ID_ATTRIBUTE = "id";
     public static final String CLASS_ATTRIBUTE = "class";
+    public static final String SCORE_ATTRIBUTE = "score";
 
     private BeanDefinitionRegistry registry;
 
@@ -30,7 +31,6 @@ public class XmlBeanDefinitionReader {
         InputStream is = null;
         Document doc = null;
         try {
-            ClassLoader cl = ClassUtils.getDefaultClassLoader();
             is = resource.getInputStream();
             SAXReader reader = new SAXReader();
             doc = reader.read(is);
@@ -40,12 +40,15 @@ public class XmlBeanDefinitionReader {
                 Element element = iter.next();
                 String beanID = element.attributeValue(ID_ATTRIBUTE);
                 String beanClassName = element.attributeValue(CLASS_ATTRIBUTE);
+                String beanScore = element.attributeValue(SCORE_ATTRIBUTE);
                 BeanDefinition bd = new GenericBeanDefinition(beanID, beanClassName);
-//                beanDefinitionMap.put(beanID, bd);
+                if(beanScore != null) {
+                    bd.setScore(beanScore);
+                }
                 registry.registerBeanDefinition(beanID, bd);
             }
         } catch (Exception e) {
-            throw new BeanDefinitionStoreException("loadBeanDefinition ", e);
+            throw new BeanDefinitionStoreException("IOException parsing XML document from " + resource.getDescription(),e);
         } finally {
             if(is != null) {
                 try {

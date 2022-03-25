@@ -4,5 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="petStore" class="org.litespring.service.v1.PetStoreService"></bean>
+    <bean id="singlePetStore" class="org.litespring.service.v1.PetStoreService" score="singleton"></bean>
+    <bean id="prototypePetStore" class="org.litespring.service.v1.PetStoreService" score="prototype"></bean>
     <bean id="invalidBean" class="org.litespring.service.v1.xxx"></bean>
 </beans>

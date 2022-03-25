@@ -18,7 +18,7 @@ public class ClassPathResource implements Resource {
 
     public ClassPathResource(String configFile, ClassLoader classLoader) {
         this.configFile = configFile;
-        this.classLoader = classLoader != null ? classLoader : ClassUtils.getDefaultClassLoader();
+        this.classLoader = classLoader != null ? classLoader: ClassUtils.getDefaultClassLoader();;
     }
 
     public InputStream getInputStream() throws IOException {
