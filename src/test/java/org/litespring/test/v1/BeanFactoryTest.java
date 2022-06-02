@@ -25,7 +25,7 @@ public class BeanFactoryTest {
     @Test
     public void testGetBean() {
         Resource resource = new ClassPathResource("petstore-v1.xml");
-        reader.loadBeanDefinition(resource);
+        reader.loadBeanDefinitions(resource);
         BeanDefinition beanDefinition = factory.getBeanDefinition("petStore");
 
         Assert.assertTrue(beanDefinition.isSingleton());
@@ -44,7 +44,7 @@ public class BeanFactoryTest {
     @Test
     public void testGetBeanBySingleton() {
         Resource resource = new ClassPathResource("petstore-v1.xml");
-        reader.loadBeanDefinition(resource);
+        reader.loadBeanDefinitions(resource);
         BeanDefinition beanDefinition = factory.getBeanDefinition("singlePetStore");
 
         Assert.assertTrue(beanDefinition.isSingleton());
@@ -63,7 +63,7 @@ public class BeanFactoryTest {
     @Test
     public void testGetBeanByPrototype() {
         Resource resource = new ClassPathResource("petstore-v1.xml");
-        reader.loadBeanDefinition(resource);
+        reader.loadBeanDefinitions(resource);
         BeanDefinition beanDefinition = factory.getBeanDefinition("prototypePetStore");
 
         Assert.assertFalse(beanDefinition.isSingleton());
@@ -82,7 +82,7 @@ public class BeanFactoryTest {
     @Test
     public void testInvalidBean() {
         Resource resource = new ClassPathResource("petstore-v1.xml");
-        reader.loadBeanDefinition(resource);
+        reader.loadBeanDefinitions(resource);
         try {
             factory.getBean("invalidBean");
         } catch (BeanCreationException e) {
@@ -94,8 +94,8 @@ public class BeanFactoryTest {
     @Test
     public void testInvalidXml() {
         try {
-            Resource resource = new ClassPathResource("petstore-v2.xml");
-            reader.loadBeanDefinition(resource);
+            Resource resource = new ClassPathResource("petstore-v11.xml");
+            reader.loadBeanDefinitions(resource);
         } catch (BeanDefinitionStoreException e) {
             return;
         }

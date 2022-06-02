@@ -1,9 +1,11 @@
 package org.litespring.beans;
 
+import java.util.List;
+
 public interface BeanDefinition {
-    public static String SCORE_SINGLETON = "singleton";
-    public static String SCORE_PROTOTYPE = "prototype";
-    public static String SCORE_DEFAULT = "";
+    String SCORE_SINGLETON = "singleton";
+    String SCORE_PROTOTYPE = "prototype";
+    String SCORE_DEFAULT = "";
 
     boolean isSingleton();
     boolean isPrototype();
@@ -11,4 +13,5 @@ public interface BeanDefinition {
     void setScore(String score);
 
     String getBeanClassName();
+    List<PropertyValue> getPropertyValues();
 }
