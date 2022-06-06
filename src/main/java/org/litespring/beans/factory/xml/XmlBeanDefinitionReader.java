@@ -55,7 +55,7 @@ public class XmlBeanDefinitionReader {
                 if(beanScore != null) {
                     bd.setScore(beanScore);
                 }
-                parsePropertyElement(element, bd);
+                parsePropertyElement(element, bd);  // 这里不需要考虑初始化顺序，因为bean是延迟初始化，即要使用的使用才会去初始化
                 registry.registerBeanDefinition(beanID, bd);
             }
         } catch (Exception e) {
