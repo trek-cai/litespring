@@ -57,6 +57,23 @@ public class DefaultBeanFactory extends DefaultSingletonRegistry
         return bean;
     }
 
+    private Object instantiateBean(BeanDefinition bd) {
+        if(bd.hasConstructorArgumentValues()) {
+            ConstructorResolver constructorResolver = new ConstructorResolver(this);
+            return constructorResolver.autowireConstructor(bd);
+        } else {
+            ClassLoader cl = this.getBeanClassLoader();
+            String beanClassName = bd.getBeanClassName();
+            Class<?> clz = null;
+            try {
+                clz = cl.loadClass(beanClassName);
+                return clz.newInstance();
+            } catch (Exception e) {
+                throw new BeanCreationException("create bean for "+ beanClassName +" failed",e);
+            }
+        }
+    }
+
     private void populateBean(BeanDefinition bd, Object bean) {
         List<PropertyValue> pvs = bd.getPropertyValues();
         if (pvs == null || pvs.isEmpty()) {
@@ -85,18 +102,6 @@ public class DefaultBeanFactory extends DefaultSingletonRegistry
             e.printStackTrace();
         }
 
-    }
-
-    private Object instantiateBean(BeanDefinition bd) {
-        ClassLoader cl = this.getBeanClassLoader();
-        String beanClassName = bd.getBeanClassName();
-        Class<?> clz = null;
-        try {
-            clz = cl.loadClass(beanClassName);
-            return clz.newInstance();
-        } catch (Exception e) {
-            throw new BeanCreationException("create bean for "+ beanClassName +" failed",e);
-        }
     }
 
     public void setBeanClassLoader(ClassLoader beanClassLoader) {

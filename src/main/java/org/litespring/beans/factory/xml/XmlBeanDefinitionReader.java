@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.litespring.ConstructorArgument;
 import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.factory.BeanDefinitionStoreException;
@@ -28,6 +29,9 @@ public class XmlBeanDefinitionReader {
     public static final String REF_ATTRIBUTE = "ref";
     public static final String VALUE_ATTRIBUTE = "value";
     public static final String NAME_ATTRIBUTE = "name";
+
+    public static final String TYPE_ATTRIBUTE = "type";
+    public static final String CONSTRUCTOR_ARG_ELEMENT = "constructor-arg";
 
     private BeanDefinitionRegistry registry;
 
@@ -55,6 +59,7 @@ public class XmlBeanDefinitionReader {
                 if(beanScore != null) {
                     bd.setScore(beanScore);
                 }
+                parseConstructorArgElements(element, bd);
                 parsePropertyElement(element, bd);  // 这里不需要考虑初始化顺序，因为bean是延迟初始化，即要使用的使用才会去初始化
                 registry.registerBeanDefinition(beanID, bd);
             }
@@ -69,6 +74,29 @@ public class XmlBeanDefinitionReader {
                 }
             }
         }
+    }
+
+    private void parseConstructorArgElements(Element beanElement, BeanDefinition bd) {
+        Iterator iter = beanElement.elementIterator(CONSTRUCTOR_ARG_ELEMENT);
+        while(iter.hasNext()) {
+            Element argElem = (Element) iter.next();
+            parseConstructorArgElement(argElem, bd);
+        }
+    }
+
+    private void parseConstructorArgElement(Element argElemenet, BeanDefinition bd) {
+        String typeAttr = argElemenet.attributeValue(TYPE_ATTRIBUTE);
+        String nameAttr = argElemenet.attributeValue(NAME_ATTRIBUTE);
+        Object val = parsePropertyValue(argElemenet, bd, null);
+        ConstructorArgument.ValueHolder valueHolder = new ConstructorArgument.ValueHolder(val);
+        if (StringUtils.hasLength(typeAttr)) {
+            valueHolder.setType(typeAttr);
+        }
+        if (StringUtils.hasLength(nameAttr)) {
+            valueHolder.setName(nameAttr);
+        }
+
+        bd.getConstructorArgument().addArgumentValue(valueHolder);
     }
 
     private void parsePropertyElement(Element beanElement, BeanDefinition bd) {

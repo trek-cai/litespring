@@ -1,5 +1,6 @@
 package org.litespring.beans.factory.support;
 
+import org.litespring.ConstructorArgument;
 import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.PropertyValue;
 
@@ -14,6 +15,7 @@ public class GenericBeanDefinition implements BeanDefinition {
     private boolean prototype = false;
     private String score = SCORE_DEFAULT;
     private List<PropertyValue> propertyValues = new ArrayList<PropertyValue>();
+    private ConstructorArgument constructorArgument = new ConstructorArgument();
 
     public GenericBeanDefinition(String beanID, String beanClassName) {
         this.beanID = beanID;
@@ -26,6 +28,18 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     public List<PropertyValue> getPropertyValues() {
         return propertyValues;
+    }
+
+    public ConstructorArgument getConstructorArgument() {
+        return this.constructorArgument;
+    }
+
+    public String getID() {
+        return this.beanID;
+    }
+
+    public boolean hasConstructorArgumentValues() {
+        return !this.constructorArgument.isEmpty();
     }
 
     public boolean isSingleton() {

@@ -1,5 +1,7 @@
 package org.litespring.beans;
 
+import org.litespring.ConstructorArgument;
+
 import java.util.List;
 
 public interface BeanDefinition {
@@ -14,4 +16,7 @@ public interface BeanDefinition {
 
     String getBeanClassName();
     List<PropertyValue> getPropertyValues();
+    ConstructorArgument getConstructorArgument();
+    String getID();
+    public boolean hasConstructorArgumentValues();
 }
