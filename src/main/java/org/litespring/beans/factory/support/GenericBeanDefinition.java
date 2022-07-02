@@ -11,6 +11,7 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     private String beanID;
     private String beanClassName;
+    private Class<?> beanClass;
     private boolean singleton = true;
     private boolean prototype = false;
     private String score = SCORE_DEFAULT;
@@ -52,6 +53,28 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     public boolean hasConstructorArgumentValues() {
         return !this.constructorArgument.isEmpty();
+    }
+
+    public Class<?> getBeanClass() throws IllegalStateException {
+        if(this.beanClass == null){
+            throw new IllegalStateException(
+                    "Bean class name [" + this.getBeanClassName() + "] has not been resolved into an actual Class");
+        }
+        return this.beanClass;
+    }
+
+    public boolean hasBeanClass() {
+        return this.beanClass != null;
+    }
+
+    public Class<?> resolveBeanClass(ClassLoader classLoader) throws ClassNotFoundException {
+        String beanClassName = getBeanClassName();
+        if(beanClassName == null) {
+            return null;
+        }
+        Class<?> beanClass = classLoader.loadClass(beanClassName);
+        this.beanClass = beanClass;
+        return beanClass;
     }
 
     public boolean isSingleton() {
