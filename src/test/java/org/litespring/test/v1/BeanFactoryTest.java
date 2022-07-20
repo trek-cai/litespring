@@ -30,7 +30,7 @@ public class BeanFactoryTest {
 
         Assert.assertTrue(beanDefinition.isSingleton());
         Assert.assertFalse(beanDefinition.isPrototype());
-        Assert.assertEquals(BeanDefinition.SCORE_DEFAULT, beanDefinition.getScore());
+        Assert.assertEquals(BeanDefinition.SCOPE_DEFAULT, beanDefinition.getScope());
 
         Assert.assertEquals(beanDefinition.getBeanClassName(), "org.litespring.service.v1.PetStoreService");
 
@@ -49,7 +49,7 @@ public class BeanFactoryTest {
 
         Assert.assertTrue(beanDefinition.isSingleton());
         Assert.assertFalse(beanDefinition.isPrototype());
-        Assert.assertEquals(BeanDefinition.SCORE_SINGLETON, beanDefinition.getScore());
+        Assert.assertEquals(BeanDefinition.SCOPE_SINGLETON, beanDefinition.getScope());
 
         Assert.assertEquals(beanDefinition.getBeanClassName(), "org.litespring.service.v1.PetStoreService");
 
@@ -68,7 +68,7 @@ public class BeanFactoryTest {
 
         Assert.assertFalse(beanDefinition.isSingleton());
         Assert.assertTrue(beanDefinition.isPrototype());
-        Assert.assertEquals(BeanDefinition.SCORE_PROTOTYPE, beanDefinition.getScore());
+        Assert.assertEquals(BeanDefinition.SCOPE_PROTOTYPE, beanDefinition.getScope());
 
         Assert.assertEquals(beanDefinition.getBeanClassName(), "org.litespring.service.v1.PetStoreService");
 

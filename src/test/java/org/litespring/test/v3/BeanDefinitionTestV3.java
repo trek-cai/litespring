@@ -2,9 +2,8 @@ package org.litespring.test.v3;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.litespring.ConstructorArgument;
+import org.litespring.beans.ConstructorArgument;
 import org.litespring.beans.BeanDefinition;
-import org.litespring.beans.PropertyValue;
 import org.litespring.beans.factory.config.RuntimeBeanReference;
 import org.litespring.beans.factory.config.TypedStringValue;
 import org.litespring.beans.factory.support.DefaultBeanFactory;

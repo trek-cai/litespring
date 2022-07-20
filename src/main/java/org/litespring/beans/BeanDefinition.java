@@ -1,18 +1,16 @@
 package org.litespring.beans;
 
-import org.litespring.ConstructorArgument;
-
 import java.util.List;
 
 public interface BeanDefinition {
-    String SCORE_SINGLETON = "singleton";
-    String SCORE_PROTOTYPE = "prototype";
-    String SCORE_DEFAULT = "";
+    String SCOPE_SINGLETON = "singleton";
+    String SCOPE_PROTOTYPE = "prototype";
+    String SCOPE_DEFAULT = "";
 
     boolean isSingleton();
     boolean isPrototype();
-    String getScore();
-    void setScore(String score);
+    String getScope();
+    void setScope(String scope);
 
     String getBeanClassName();
     List<PropertyValue> getPropertyValues();
@@ -23,4 +21,7 @@ public interface BeanDefinition {
     Class<?> getBeanClass() throws IllegalStateException;
     boolean hasBeanClass();
     Class<?> resolveBeanClass(ClassLoader classLoader) throws ClassNotFoundException;
+
+    boolean isSynthetic();
+    void setSynthetic(boolean synthetic);
 }

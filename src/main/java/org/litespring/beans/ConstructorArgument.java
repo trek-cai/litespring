@@ -1,4 +1,4 @@
-package org.litespring;
+package org.litespring.beans;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -15,6 +15,10 @@ public class ConstructorArgument {
 
     public void addArgumentValue(ValueHolder valueHolder) {
         this.argumentValues.add(valueHolder);
+    }
+
+    public void addArgumentValue(Object value) {
+        this.argumentValues.add(new ValueHolder(value));
     }
 
     public List<ValueHolder> getArgumentValues() {

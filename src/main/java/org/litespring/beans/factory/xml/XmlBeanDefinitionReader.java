@@ -5,7 +5,8 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.litespring.ConstructorArgument;
+import org.litespring.beans.ConstructorArgument;
+import org.litespring.aop.config.ConfigBeanDefinitionParser;
 import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.factory.BeanDefinitionStoreException;
@@ -36,6 +37,7 @@ public class XmlBeanDefinitionReader {
 
     public static final String BEANS_NAMESPACE_URI = "http://www.springframework.org/schema/beans";
     public static final String CONTEXT_NAMESPACE_URI = "http://www.springframework.org/schema/context";
+    public static final String AOP_NAMESPACE_URI = "http://www.springframework.org/schema/aop";
     private static final String BASE_PACKAGE_ATTRIBUTE = "base-package";
 
     private BeanDefinitionRegistry registry;
@@ -62,6 +64,8 @@ public class XmlBeanDefinitionReader {
                     parseDefaultElement(element); //普通的bean
                 } else if(this.isContextNamespace(namespaceUri)){
                     parseComponentElement(element); //例如<context:component-scan>
+                } else if(this.isAopNamespace(namespaceUri)) {
+                    parseAopElement(element); //例如<aop:config>
                 }
             }
         } catch (Exception e) {
@@ -83,7 +87,7 @@ public class XmlBeanDefinitionReader {
         String beanScore = element.attributeValue(SCORE_ATTRIBUTE);
         BeanDefinition bd = new GenericBeanDefinition(beanID, beanClassName);
         if(beanScore != null) {
-            bd.setScore(beanScore);
+            bd.setScope(beanScore);
         }
         parseConstructorArgElements(element, bd);
         parsePropertyElement(element, bd);  // 这里不需要考虑初始化顺序，因为bean是延迟初始化，即要使用的使用才会去初始化
@@ -96,12 +100,21 @@ public class XmlBeanDefinitionReader {
         scanner.doScan(basePackages);
     }
 
+    private void parseAopElement(Element element) {
+        ConfigBeanDefinitionParser parser = new ConfigBeanDefinitionParser();
+        parser.parse(element, this.registry);
+    }
+
     private boolean isContextNamespace(String namespaceUri) {
         return (!StringUtils.hasLength(namespaceUri) || CONTEXT_NAMESPACE_URI.equals(namespaceUri));
     }
 
     private boolean isDefaultNamespace(String namespaceUri) {
         return (!StringUtils.hasLength(namespaceUri) || BEANS_NAMESPACE_URI.equals(namespaceUri));
+    }
+
+    private boolean isAopNamespace(String namespaceUri) {
+        return (!StringUtils.hasLength(namespaceUri) || AOP_NAMESPACE_URI.equals(namespaceUri));
     }
 
     private void parseConstructorArgElements(Element beanElement, BeanDefinition bd) {

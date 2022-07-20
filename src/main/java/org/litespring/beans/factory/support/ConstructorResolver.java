@@ -2,24 +2,22 @@ package org.litespring.beans.factory.support;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.litespring.ConstructorArgument;
+import org.litespring.beans.ConstructorArgument;
 import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.SimpleTypeConverter;
 import org.litespring.beans.factory.BeanCreationException;
-import org.litespring.beans.factory.BeanFactory;
 import org.litespring.beans.factory.config.ConfigurableBeanFactory;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public class ConstructorResolver {
 
     protected final Log logger = LogFactory.getLog(getClass());
 
-    private final ConfigurableBeanFactory factory;
+    private final AbstractBeanFactory factory;
 
-    public ConstructorResolver(ConfigurableBeanFactory factory) {
+    public ConstructorResolver(AbstractBeanFactory factory) {
         this.factory = factory;
     }
 

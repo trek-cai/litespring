@@ -1,6 +1,6 @@
 package org.litespring.beans.factory.support;
 
-import org.litespring.ConstructorArgument;
+import org.litespring.beans.ConstructorArgument;
 import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.PropertyValue;
 
@@ -14,7 +14,9 @@ public class GenericBeanDefinition implements BeanDefinition {
     private Class<?> beanClass;
     private boolean singleton = true;
     private boolean prototype = false;
-    private String score = SCORE_DEFAULT;
+    //表明这个Bean定义是不是我们litespring自己合成的。
+    private boolean isSynthetic = false;
+    private String score = SCOPE_DEFAULT;
     private List<PropertyValue> propertyValues = new ArrayList<PropertyValue>();
     private ConstructorArgument constructorArgument = new ConstructorArgument();
 
@@ -25,6 +27,11 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     public GenericBeanDefinition() {
 
+    }
+
+    public GenericBeanDefinition(Class<?> clz) {
+        this.beanClass = clz;
+        this.beanClassName = clz.getName();
     }
 
     public String getBeanClassName() {
@@ -77,6 +84,16 @@ public class GenericBeanDefinition implements BeanDefinition {
         return beanClass;
     }
 
+    @Override
+    public boolean isSynthetic() {
+        return this.isSynthetic;
+    }
+
+    @Override
+    public void setSynthetic(boolean synthetic) {
+        this.isSynthetic = synthetic;
+    }
+
     public boolean isSingleton() {
         return this.singleton;
     }
@@ -85,13 +102,13 @@ public class GenericBeanDefinition implements BeanDefinition {
         return this.prototype;
     }
 
-    public String getScore() {
+    public String getScope() {
         return this.score;
     }
 
-    public void setScore(String score) {
-        this.score = score;
-        this.singleton = SCORE_SINGLETON.equals(score) || SCORE_DEFAULT.equals(score);
-        this.prototype = SCORE_PROTOTYPE.equals(score);
+    public void setScope(String scope) {
+        this.score = scope;
+        this.singleton = SCOPE_SINGLETON.equals(scope) || SCOPE_DEFAULT.equals(scope);
+        this.prototype = SCOPE_PROTOTYPE.equals(scope);
     }
 }
